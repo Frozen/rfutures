@@ -1,10 +1,14 @@
 use actix::{Actor, Addr, Arbiter, Context, Handler, Message, Registry, ResponseFuture};
 
 use crate::error::MyError;
-use crate::futures::Future;
+//use crate::futures::Future;
+//use crate::futures::IntoFuture;
 use crate::server::User;
 use crate::server::{GetUsers, Server};
 use std::io;
+
+use actix::prelude::*;
+use futures::{future, Future, IntoFuture};
 
 pub struct Client {
     pub server: Addr<Server>,
@@ -19,6 +23,7 @@ impl Actor for Client {
     type Context = Context<Self>;
 
     fn started(&mut self, ctx: &mut Self::Context) {
+        println!("client started");
 
         //        self.server.send()
 
@@ -38,6 +43,7 @@ impl Handler<ClientReq> for Client {
             }
             Err(e) => Err(MyError::Mess(format!("{:?}", e))),
         });
-        Box::new(x)
+        //        Box::new(x.into_future())
+        Box::new(Ok(vec![User::default()]).into_future())
     }
 }

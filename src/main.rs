@@ -23,5 +23,11 @@ fn main() {
 
     let client = client::Client { server };
 
+    let addr2 = client.start();
+
+    let client2 = client2::Client2 { server: addr2 };
+
+    client2.start();
+    //
     let r = sys.run();
 }
